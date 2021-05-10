@@ -7,10 +7,10 @@ import java.util.Map;
 
 public enum FactionType {
 
-    SAFEZONE(3, "Admin"),
-    WARZONE(2, "Officer"),
-    NORMAL(1, "Member"),
-    FREEZONE(0, "recruit");
+    SAFEZONE(3, "Safezone"),
+    WARZONE(2, "Warzone"),
+    NORMAL(1, "Faction"),
+    FREEZONE(0, "Freezone");
 
     private int value;
     private String name;

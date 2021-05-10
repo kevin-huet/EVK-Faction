@@ -20,7 +20,7 @@ public class CommandManager {
 
     public void initCommand() {
         BaseCommand cmd = new BaseCommand();
-        App.getInstance().getCommand("cmd").setExecutor(cmd);
+        App.getInstance().getCommand("f").setExecutor(cmd);
         cmd.registerCommand("ally", new AllyFactionCommand());
         cmd.registerCommand("claim", new ClaimFactionCommand());
         cmd.registerCommand("create", new CreateFactionCommand());

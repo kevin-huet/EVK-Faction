@@ -3,6 +3,7 @@ package com.github.kevinhuet.evkfaction.Entity;
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class Faction {
 
     private String name;
+    private String description;
     private Location home;
     private double power;
     private double powerMax;
@@ -142,5 +144,55 @@ public class Faction {
 
     public Claim getClaimFromChunk(Chunk chunk) {
         return this.claims.stream().filter(c -> c.getChunk().equals(chunk)).findAny().orElse(null);
+    }
+
+    public Faction setEnemy(String targetName) {
+        Faction target = FactionManager.getInstance().getFactionByName(targetName);
+
+        if (target != null)
+            this.relations.put(targetName, Relation.ENEMY);
+        return target;
+    }
+
+    public Faction setAlly(String targetName) {
+        Faction target = FactionManager.getInstance().getFactionByName(targetName);
+
+        if (target != null)
+            this.relations.put(targetName, Relation.ALLY);
+        return target;
+    }
+
+    public Faction setNeutral(String targetName) {
+        Faction target = FactionManager.getInstance().getFactionByName(targetName);
+
+        if (target != null)
+            this.relations.put(targetName, Relation.NEUTRAL);
+        return target;
+    }
+
+    public boolean isSpecialFaction() {
+        return (this.factionType != FactionType.FREEZONE && this.factionType != FactionType.NORMAL);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Map<String, Relation> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(Map<String, Relation> relations) {
+        this.relations = relations;
+    }
+
+    public void sendMessageForAllMembers(String[] message) {
+        for (FactionPlayer fp : getPlayers()) {
+            fp.getPlayer().sendMessage(message);
+        }
     }
 }
