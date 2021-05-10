@@ -5,6 +5,7 @@ import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import com.github.kevinhuet.evkfaction.Entity.FactionType;
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class ChunkListener implements Listener {
 
@@ -55,6 +57,15 @@ public class ChunkListener implements Listener {
 
         if (faction.isSpecialFaction()) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerChangeChunk(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        Chunk isNewChunk = player.getLocation().getChunk();
+        if (player.getLocation().getChunk() != isNewChunk){
+            player.sendMessage("You changed Chunk!");
         }
     }
 }
