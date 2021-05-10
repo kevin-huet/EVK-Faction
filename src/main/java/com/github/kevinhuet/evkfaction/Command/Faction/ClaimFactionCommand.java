@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
 public class ClaimFactionCommand implements SubCommand {
+
     @Override
     public void onCommand(Player player, Command command, String[] args) {
         FactionPlayer factionPlayer = FactionPlayerManager.getInstance().getPlayerFaction(player);

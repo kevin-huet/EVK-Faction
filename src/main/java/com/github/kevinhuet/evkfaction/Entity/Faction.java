@@ -1,10 +1,13 @@
 package com.github.kevinhuet.evkfaction.Entity;
 
+import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Faction {
 
@@ -16,16 +19,36 @@ public class Faction {
     private Role role = Role.RECRUIT;
     private List<Claim> claims = new ArrayList<>();
     private List<FactionPlayer> players = new ArrayList<>();
+    private FactionType factionType = FactionType.NORMAL;
+    private Map<String, Relation> relations = new HashMap<>();
 
     public Faction(String name, FactionPlayer creator) {
         this.players.add(creator);
         this.name = name;
+        this.power = 10 * this.players.size();
+        FactionManager.getInstance().addFaction(this);
+    }
+
+    public Faction(String name, FactionPlayer creator, FactionType type) {
+        this.players.add(creator);
+        this.name = name;
+        this.factionType = type;
+        this.power = 10 * this.players.size();
+        FactionManager.getInstance().addFaction(this);
     }
 
     public Claim claim(Chunk chunk) {
         Claim claim = new Claim(this, chunk);
+        Faction target = FactionManager.getInstance().getFactionByChunk(chunk);
+        if (target.getFactionType() == FactionType.FREEZONE) {
+            if (this.claims.size() + 1 <= this.power);
+        } else if (target.getFactionType() == FactionType.NORMAL) {
+            if (target.isClaimable()) {
+                target.claims.remove(target.getClaimFromChunk(chunk));
+                this.claims.add(claim);
+            }
+        }
 
-        this.claims.add(claim);
         return claim;
     }
 
@@ -103,5 +126,21 @@ public class Faction {
 
     public void setClaims(List<Claim> claims) {
         this.claims = claims;
+    }
+
+    public FactionType getFactionType() {
+        return factionType;
+    }
+
+    public void setFactionType(FactionType factionType) {
+        this.factionType = factionType;
+    }
+
+    public boolean isClaimable() {
+        return this.claims.size() > this.power;
+    }
+
+    public Claim getClaimFromChunk(Chunk chunk) {
+        return this.claims.stream().filter(c -> c.getChunk().equals(chunk)).findAny().orElse(null);
     }
 }

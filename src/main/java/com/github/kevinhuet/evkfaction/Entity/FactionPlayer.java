@@ -1,5 +1,6 @@
 package com.github.kevinhuet.evkfaction.Entity;
 
+import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,11 +17,13 @@ public class FactionPlayer {
     public FactionPlayer(UUID playerUUID) {
         this.playerUUID = playerUUID;
         this.player = Bukkit.getPlayer(playerUUID);
+        FactionPlayerManager.getInstance().addPlayerFaction(this);
     }
 
     public FactionPlayer(Player player) {
         this.player = player;
         this.playerUUID = player.getUniqueId();
+        FactionPlayerManager.getInstance().addPlayerFaction(this);
     }
 
     public Player getPlayer() {
@@ -53,5 +56,9 @@ public class FactionPlayer {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean hasFaction() {
+        return (this.getFaction() != null && this.getFaction().getFactionType() == FactionType.NORMAL);
     }
 }

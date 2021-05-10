@@ -6,12 +6,14 @@ import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import org.bukkit.Chunk;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FactionManager {
 
     private static FactionManager instance = null;
-    private List<Faction> factions = new ArrayList<>();
+    private Map<String, Faction> factions = new HashMap<>();
 
 
     public FactionManager() {
@@ -30,27 +32,23 @@ public class FactionManager {
     }
 
     public Faction getFactionByName(String name) {
-        for (Faction faction : this.factions) {
-            if (faction.getName() == name)
-                return faction;
-        }
-        return null;
+        return this.factions.get(name);
     }
 
     public void addFaction(Faction faction) {
-        this.factions.add(faction);
+        this.factions.put(faction.getName(), faction);
     }
 
-    public List<Faction> getFactions() {
+    public Map<String, Faction> getFactions() {
         return this.factions;
     }
 
-    public void setFactions(List<Faction> factions) {
+    public void setFactions(Map<String, Faction> factions) {
         this.factions = factions;
     }
 
     public Faction getFactionByChunk(Chunk chunk) {
-        for (Faction faction : this.factions) {
+        for (Faction faction: this.factions.values()) {
             for (Claim claim : faction.getClaims()) {
                 if (claim.getChunk() == chunk)
                     return faction;

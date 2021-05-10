@@ -1,6 +1,7 @@
 package com.github.kevinhuet.evkfaction;
 
 import com.github.kevinhuet.evkfaction.Command.BaseCommand;
+import com.github.kevinhuet.evkfaction.Service.CommandManager;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,11 +16,8 @@ public class App extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        CommandManager.getInstance().initCommand();
         getLogger().info("enable");
-        BaseCommand cmd = new BaseCommand();
-        getCommand("cmd").setExecutor(cmd);
-        //cmd.registerCommand("lol", new LolSubCommand());
-
     }
 
     @Override

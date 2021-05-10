@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="EVK-Faction" target="11.0.9.1" />
+      <module name="EVK-Faction" target="11.0.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
