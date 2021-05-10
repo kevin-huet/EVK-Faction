@@ -58,6 +58,14 @@ public class FactionPlayer {
         this.role = role;
     }
 
+    public UUID getPlayerUUID() {
+        return playerUUID;
+    }
+
+    public void setPlayerUUID(UUID playerUUID) {
+        this.playerUUID = playerUUID;
+    }
+
     public boolean hasFaction() {
         return (this.getFaction() != null && this.getFaction().getFactionType() == FactionType.NORMAL);
     }

@@ -1,6 +1,8 @@
 package com.github.kevinhuet.evkfaction.Entity;
 
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -39,18 +41,29 @@ public class Faction {
         FactionManager.getInstance().addFaction(this);
     }
 
-    public Claim claim(Chunk chunk) {
+    public Claim claim(FactionPlayer factionPlayer, Chunk chunk) {
         Claim claim = new Claim(this, chunk);
         Faction target = FactionManager.getInstance().getFactionByChunk(chunk);
-        if (target.getFactionType() == FactionType.FREEZONE) {
-            if (this.claims.size() + 1 <= this.power);
-        } else if (target.getFactionType() == FactionType.NORMAL) {
-            if (target.isClaimable()) {
-                target.claims.remove(target.getClaimFromChunk(chunk));
+        Claim existClaim = getClaimFromChunk(chunk);
+        if (existClaim != null) {
+            factionPlayer.getPlayer().sendMessage("test");
+        }
+        if (target == null || target.getFactionType() == FactionType.FREEZONE) {
+            if (existClaim == null || existClaim.getFaction() != this) {
                 this.claims.add(claim);
+                for (Claim c:
+                        this.getClaims()) {
+                    factionPlayer.getPlayer().sendMessage(c.getChunk().toString());
+
+                }
+                sendMessageForAllMembers(ChatColor.YELLOW + factionPlayer.getPlayer().getName() +
+                        ChatColor.GREEN + " claimed a land at the coordinates : " +
+                        factionPlayer.getPlayer().getLocation().getChunk().getX() + ", " + factionPlayer.getPlayer().getLocation().getChunk().getZ()
+                );
+            } else if (existClaim.getFaction() == this) {
+                factionPlayer.getPlayer().sendMessage("you already have this land");
             }
         }
-
         return claim;
     }
 
@@ -143,7 +156,7 @@ public class Faction {
     }
 
     public Claim getClaimFromChunk(Chunk chunk) {
-        return this.claims.stream().filter(c -> c.getChunk().equals(chunk)).findAny().orElse(null);
+        return this.claims.stream().filter(c -> c.getChunk() == chunk).findFirst().orElse(null);
     }
 
     public Faction setEnemy(String targetName) {
@@ -190,7 +203,7 @@ public class Faction {
         this.relations = relations;
     }
 
-    public void sendMessageForAllMembers(String[] message) {
+    public void sendMessageForAllMembers(String message) {
         for (FactionPlayer fp : getPlayers()) {
             fp.getPlayer().sendMessage(message);
         }

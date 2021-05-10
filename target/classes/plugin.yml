@@ -1,0 +1,7 @@
+name: EVKFaction
+version: 1.0
+main: com.github.kevinhuet.evkfaction.App
+author: Ventuss
+commands:
+  f:
+    description: faction

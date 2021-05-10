@@ -37,6 +37,7 @@ public class CommandManager {
         cmd.registerCommand("rename", new RenameFactionCommand());
         cmd.registerCommand("sethome", new setHomeFactionCommand());
         cmd.registerCommand("show", new ShowFactionCommand());
+        cmd.registerCommand("chunks", new ChunkFactionCommand());
 
     }
 }

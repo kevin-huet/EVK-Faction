@@ -23,7 +23,7 @@ public class FactionPlayerManager {
 
     public FactionPlayer getPlayerFaction(Player player) {
         for (FactionPlayer factionPlayer : this.factionPlayers) {
-            if (factionPlayer.getPlayer().getUniqueId() == player.getUniqueId())
+            if (factionPlayer.getPlayerUUID() == player.getUniqueId())
                 return factionPlayer;
         }
         return null;

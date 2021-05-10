@@ -1,19 +1,41 @@
 package com.github.kevinhuet.evkfaction.Command.Faction;
 
 import com.github.kevinhuet.evkfaction.Command.SubCommand;
+import com.github.kevinhuet.evkfaction.Entity.Faction;
+import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 public class MapFactionCommand implements SubCommand {
 
     @Override
     public void onCommand(Player player, Command command, String[] args) {
+        Faction faction = null;
+        List<String> list = Arrays.asList(
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "------------+------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------",
+                "-------------------------"
+        );
 
+        for (Chunk chunk : getChunksAroundPlayer(player)) {
+            list.get()
+        }
     }
 
     @Override
@@ -37,4 +59,6 @@ public class MapFactionCommand implements SubCommand {
         }
         return chunksAroundPlayer;
     }
+
+
 }

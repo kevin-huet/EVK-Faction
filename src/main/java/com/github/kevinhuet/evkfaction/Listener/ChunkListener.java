@@ -5,6 +5,7 @@ import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import com.github.kevinhuet.evkfaction.Entity.FactionType;
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,23 +23,27 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
         FactionPlayer player = FactionPlayerManager.getInstance().getPlayerFaction(event.getPlayer());
+        Faction faction = FactionManager.getInstance().getFactionByChunk(event.getBlock().getChunk());
 
-        if (FactionManager.getInstance().getFactionByChunk(event.getPlayer().getLocation().getChunk()) != player.getFaction())
+        if (faction != null && faction != player.getFaction() && faction.getFactionType() != FactionType.FREEZONE) {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED+"You cannot break a block in the territory of the Bob faction");
+        }
     }
 
     @EventHandler
     public void onPlayerPlaceBlock(BlockPlaceEvent event) {
         FactionPlayer player = FactionPlayerManager.getInstance().getPlayerFaction(event.getPlayer());
-        if (FactionManager.getInstance().getFactionByChunk(event.getPlayer().getLocation().getChunk()) != player.getFaction())
+        Faction faction = FactionManager.getInstance().getFactionByChunk(event.getBlock().getChunk());
+
+        if (faction != null && faction != player.getFaction() && faction.getFactionType() != FactionType.FREEZONE) {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED+"You cannot place a block in the territory of the Bob faction");
+        }
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        FactionPlayer player = FactionPlayerManager.getInstance().getPlayerFaction(event.getPlayer());
-        if (FactionManager.getInstance().getFactionByChunk(event.getPlayer().getLocation().getChunk()) != player.getFaction())
-            event.setCancelled(true);
     }
 
     @EventHandler
