@@ -38,6 +38,8 @@ public class CommandManager {
         cmd.registerCommand("sethome", new setHomeFactionCommand());
         cmd.registerCommand("show", new ShowFactionCommand());
         cmd.registerCommand("chunks", new ChunkFactionCommand());
+        cmd.registerCommand("map", new MapFactionCommand());
+        cmd.registerCommand("join", new JoinFactionCommand());
 
     }
 }

@@ -22,6 +22,8 @@ public class FactionPlayerManager {
     }
 
     public FactionPlayer getPlayerFaction(Player player) {
+        if (player == null)
+            return null;
         for (FactionPlayer factionPlayer : this.factionPlayers) {
             if (factionPlayer.getPlayerUUID() == player.getUniqueId())
                 return factionPlayer;
