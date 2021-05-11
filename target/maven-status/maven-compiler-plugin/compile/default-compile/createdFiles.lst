@@ -1,3 +1,4 @@
-com/github/kevinhuet/evkfaction/Command/Faction/PowerFactionCommand.class
-com/github/kevinhuet/evkfaction/Config/MapConfig.class
-com/github/kevinhuet/evkfaction/Command/Faction/JoinFactionCommand.class
+com\github\kevinhuet\evkfaction\Config\MapConfig.class
+com\github\kevinhuet\evkfaction\Command\Faction\PowerFactionCommand.class
+com\github\kevinhuet\evkfaction\Command\Faction\JoinFactionCommand.class
+com\github\kevinhuet\evkfaction\Entity\Owner.class

@@ -5,15 +5,12 @@ import com.github.kevinhuet.evkfaction.Entity.Faction;
 import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import org.bukkit.Chunk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FactionManager {
 
     private static FactionManager instance = null;
-    private Map<String, Faction> factions = new HashMap<>();
+    private Map<UUID, Faction> factions = new HashMap<>();
 
 
     public FactionManager() {
@@ -32,18 +29,26 @@ public class FactionManager {
     }
 
     public Faction getFactionByName(String name) {
-        return this.factions.get(name);
+        for (Map.Entry<UUID, Faction> entry : this.factions.entrySet()) {
+            if (entry.getValue().getName().equals("name"))
+                return entry.getValue();
+        }
+        return null;
     }
 
     public void addFaction(Faction faction) {
-        this.factions.put(faction.getName(), faction);
+        this.factions.put(faction.getId(), faction);
     }
 
-    public Map<String, Faction> getFactions() {
+    public void renameFaction(Faction faction, String newName) {
+        faction.setName(newName);
+    }
+
+    public Map<UUID, Faction> getFactions() {
         return this.factions;
     }
 
-    public void setFactions(Map<String, Faction> factions) {
+    public void setFactions(Map<UUID, Faction> factions) {
         this.factions = factions;
     }
 

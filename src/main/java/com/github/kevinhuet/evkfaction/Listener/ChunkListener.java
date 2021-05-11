@@ -18,7 +18,12 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChunkListener implements Listener {
+
+    private Map<Player, Chunk> playerChunkMap = new HashMap<>();
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
@@ -68,9 +73,18 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerChangeChunk(PlayerMoveEvent event){
         Player player = event.getPlayer();
-        Chunk isNewChunk = player.getLocation().getChunk();
-        if (player.getLocation().getChunk() != isNewChunk){
-            player.sendMessage("You changed Chunk!");
+        Faction faction = null;
+        if (event.getFrom().getChunk().equals(event.getTo().getChunk())) {
+
+        } else {
+            faction = FactionManager.getInstance().getFactionByChunk(event.getTo().getChunk());
+            if (faction != null) {
+                player.sendMessage(faction.getName() + " - " + faction.getDescription());
+                player.sendTitle(faction.getName(), faction.getDescription());
+            } else {
+                player.sendMessage("FreeZone");
+                player.sendTitle("FreeZone", "you can claim this");
+            }
         }
     }
 }

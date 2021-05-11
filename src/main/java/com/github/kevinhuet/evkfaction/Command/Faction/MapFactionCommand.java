@@ -28,17 +28,14 @@ public class MapFactionCommand implements SubCommand {
         return null;
     }
 
-    private Collection<Chunk> getChunksAroundPlayer(Player player) {
+    private void getChunksAroundPlayer(Player player) {
         World world = player.getWorld();
-        int[] offset = {-1, 0, 1};
         int baseX = player.getLocation().getChunk().getX();
         int baseZ = player.getLocation().getChunk().getZ();
         String[] arrays = new String[]{"", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         Map<String, String>factionMap = new HashMap<>();
         int i = 0;
-        int j = 0;
         char ascii = '#';
-        Collection<Chunk> chunksAroundPlayer = new HashSet<>();
         FactionPlayer factionPlayer = FactionPlayerManager.getInstance().getPlayerFaction(player);
 
         for (int x = baseX - 7; x < baseX + 7; x++) {
@@ -50,48 +47,27 @@ public class MapFactionCommand implements SubCommand {
                 } else if (faction == null) {
                     arrays[i] += "-";
                 } else if (factionPlayer.getFaction() == faction) {
-
-                    if (factionMap.containsKey(faction.getName()))
-                        arrays[i] += ChatColor.GREEN +factionMap.get(faction.getName())+ChatColor.WHITE;
-                    else {
-                        arrays[i] += ChatColor.GREEN + Character.toString(ascii) + ChatColor.WHITE;
-                        factionMap.put(faction.getName(), String.valueOf(ascii++));
-                    }
+                    this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.GREEN);
                 } else if (factionPlayer.getFaction() != faction && factionPlayer.getFaction().getRelations().get(faction.getName()) == Relation.ENEMY) {
-
-                    if (factionMap.containsKey(faction.getName()))
-                        arrays[i] += ChatColor.RED +factionMap.get(faction.getName())+ChatColor.WHITE;
-                    else {
-                        arrays[i] += ChatColor.RED + Character.toString(ascii) + ChatColor.WHITE;
-                        factionMap.put(faction.getName(), String.valueOf(ascii++));
-                    }
-
+                    this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.RED);
                 } else if (factionPlayer.getFaction() != faction && factionPlayer.getFaction().getRelations().get(faction.getName()) == Relation.ALLY) {
-
-                    if (factionMap.containsKey(faction.getName()))
-                        arrays[i] += ChatColor.LIGHT_PURPLE +factionMap.get(faction.getName())+ChatColor.WHITE;
-                    else {
-                        arrays[i] += ChatColor.LIGHT_PURPLE + Character.toString(ascii) + ChatColor.WHITE;
-                        factionMap.put(faction.getName(), String.valueOf(ascii++));
-                    }
-
+                    this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.LIGHT_PURPLE);
                 } else if (factionPlayer.getFaction() != faction) {
-
-                    if (factionMap.containsKey(faction.getName()))
-                        arrays[i] += ChatColor.WHITE +factionMap.get(faction.getName())+ChatColor.WHITE;
-                    else {
-                        arrays[i] += ChatColor.WHITE + Character.toString(ascii) + ChatColor.WHITE;
-                        factionMap.put(faction.getName(), String.valueOf(ascii++));
-                    }
+                    this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.WHITE);
                 }
-                j++;
             }
             player.sendMessage(arrays[i]);
             i++;
-            j = 0;
         }
-        return chunksAroundPlayer;
     }
 
+    private void addClaimIntoMap(Faction faction, Map<String, String> factionMap, char ascii, String[] arrays, int i, ChatColor color) {
+        if (factionMap.containsKey(faction.getName()))
+            arrays[i] += color + factionMap.get(faction.getName())+ChatColor.WHITE;
+        else {
+            arrays[i] += color +  Character.toString(ascii) + ChatColor.WHITE;
+            factionMap.put(faction.getName(), String.valueOf(ascii++));
+        }
+    }
 
 }

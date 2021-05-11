@@ -7,13 +7,11 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Faction {
 
+    private UUID id;
     private String name;
     private String description;
     private Location home;
@@ -24,9 +22,10 @@ public class Faction {
     private List<Claim> claims = new ArrayList<>();
     private List<FactionPlayer> players = new ArrayList<>();
     private FactionType factionType = FactionType.NORMAL;
-    private Map<String, Relation> relations = new HashMap<>();
+    private Map<UUID, Relation> relations = new HashMap<>();
 
     public Faction(String name, FactionPlayer creator) {
+        this.id = UUID.randomUUID();
         this.players.add(creator);
         this.name = name;
         this.power = 10 * this.players.size();
@@ -34,6 +33,7 @@ public class Faction {
     }
 
     public Faction(String name, FactionPlayer creator, FactionType type) {
+        this.id = UUID.randomUUID();
         this.players.add(creator);
         this.name = name;
         this.factionType = type;
@@ -163,7 +163,7 @@ public class Faction {
         Faction target = FactionManager.getInstance().getFactionByName(targetName);
 
         if (target != null)
-            this.relations.put(targetName, Relation.ENEMY);
+            this.relations.put(target.getId(), Relation.ENEMY);
         return target;
     }
 
@@ -171,7 +171,7 @@ public class Faction {
         Faction target = FactionManager.getInstance().getFactionByName(targetName);
 
         if (target != null)
-            this.relations.put(targetName, Relation.ALLY);
+            this.relations.put(target.getId(), Relation.ALLY);
         return target;
     }
 
@@ -179,7 +179,7 @@ public class Faction {
         Faction target = FactionManager.getInstance().getFactionByName(targetName);
 
         if (target != null)
-            this.relations.put(targetName, Relation.NEUTRAL);
+            this.relations.put(target.getId(), Relation.NEUTRAL);
         return target;
     }
 
@@ -188,24 +188,37 @@ public class Faction {
     }
 
     public String getDescription() {
-        return description;
+        return (description == null) ? "" : description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public Map<String, Relation> getRelations() {
+    public Map<UUID, Relation> getRelations() {
         return relations;
     }
 
-    public void setRelations(Map<String, Relation> relations) {
-        this.relations = relations;
-    }
 
     public void sendMessageForAllMembers(String message) {
         for (FactionPlayer fp : getPlayers()) {
             fp.getPlayer().sendMessage(message);
         }
+    }
+
+    public void rename(String name) {
+        FactionManager.getInstance().renameFaction(this, name);
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setRelations(Map<UUID, Relation> relations) {
+        this.relations = relations;
     }
 }

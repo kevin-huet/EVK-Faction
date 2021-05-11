@@ -12,7 +12,7 @@ public class FactionPlayer {
     private Player player;
     private Faction faction = null;
     private double power = 0.0;
-    private Role role = null;
+    private Role role = Role.RECRUIT;
 
     public FactionPlayer(UUID playerUUID) {
         this.playerUUID = playerUUID;
@@ -31,6 +31,7 @@ public class FactionPlayer {
     }
 
     public void setPlayer(Player player) {
+        this.playerUUID = player.getUniqueId();
         this.player = player;
     }
 
@@ -64,6 +65,7 @@ public class FactionPlayer {
 
     public void setPlayerUUID(UUID playerUUID) {
         this.playerUUID = playerUUID;
+        this.player = Bukkit.getPlayer(playerUUID);
     }
 
     public boolean hasFaction() {

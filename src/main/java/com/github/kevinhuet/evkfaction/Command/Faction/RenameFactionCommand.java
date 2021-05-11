@@ -12,8 +12,11 @@ public class RenameFactionCommand implements SubCommand {
     public void onCommand(Player player, Command command, String[] args) {
         FactionPlayer factionPlayer = FactionPlayerManager.getInstance().getPlayerFaction(player);
 
+        if (args.length < 2)
+            return;
         if (factionPlayer == null || !factionPlayer.getRole().isAtMost(Role.OFFICER))
             return;
+        factionPlayer.getFaction().rename(args[1]);
     }
 
     @Override

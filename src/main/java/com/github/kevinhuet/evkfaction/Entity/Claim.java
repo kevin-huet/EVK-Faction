@@ -9,7 +9,7 @@ public class Claim implements Serializable {
 
     private Faction faction;
     private Chunk chunk;
-
+    private Owner owner;
 
     public Claim(Faction faction, Chunk chunk) {
         this.faction = faction;
