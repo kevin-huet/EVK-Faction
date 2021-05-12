@@ -74,15 +74,17 @@ public class ChunkListener implements Listener {
     public void onPlayerChangeChunk(PlayerMoveEvent event){
         Player player = event.getPlayer();
         Faction faction = null;
+        Faction lastFaction = null;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) {
 
         } else {
             faction = FactionManager.getInstance().getFactionByChunk(event.getTo().getChunk());
+            lastFaction = FactionManager.getInstance().getFactionByChunk(event.getFrom().getChunk());
             if (faction != null) {
                 player.sendMessage(faction.getName() + " - " + faction.getDescription());
                 player.sendTitle(faction.getName(), faction.getDescription());
-            } else {
-                player.sendMessage("FreeZone");
+            } else if (faction != lastFaction) {
+                player.sendMessage("FreeZone - you can claim this");
                 player.sendTitle("FreeZone", "you can claim this");
             }
         }
