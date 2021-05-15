@@ -1,4 +1,8 @@
+com\github\kevinhuet\evkfaction\Command\Faction\LeaveFactionCommand.class
+com\github\kevinhuet\evkfaction\Service\ConfigManager.class
 com\github\kevinhuet\evkfaction\Config\MapConfig.class
+com\github\kevinhuet\evkfaction\Utils\Location2D.class
+com\github\kevinhuet\evkfaction\Entity\Flags.class
 com\github\kevinhuet\evkfaction\Command\Faction\PowerFactionCommand.class
 com\github\kevinhuet\evkfaction\Command\Faction\JoinFactionCommand.class
 com\github\kevinhuet\evkfaction\Entity\Owner.class

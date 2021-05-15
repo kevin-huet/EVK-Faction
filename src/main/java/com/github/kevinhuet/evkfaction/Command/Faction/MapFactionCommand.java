@@ -48,9 +48,9 @@ public class MapFactionCommand implements SubCommand {
                     arrays[i] += "-";
                 } else if (factionPlayer.getFaction() == faction) {
                     this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.GREEN);
-                } else if (factionPlayer.getFaction() != faction && factionPlayer.getFaction().getRelations().get(faction.getName()) == Relation.ENEMY) {
+                } else if (factionPlayer.getFaction() != faction && faction.checkRelation(factionPlayer.getFaction()) == Relation.ENEMY) {
                     this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.RED);
-                } else if (factionPlayer.getFaction() != faction && factionPlayer.getFaction().getRelations().get(faction.getName()) == Relation.ALLY) {
+                } else if (factionPlayer.getFaction() != faction && faction.checkRelation(factionPlayer.getFaction()) == Relation.ALLY) {
                     this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.LIGHT_PURPLE);
                 } else if (factionPlayer.getFaction() != faction) {
                     this.addClaimIntoMap(faction, factionMap, ascii, arrays, i, ChatColor.WHITE);

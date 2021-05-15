@@ -1,5 +1,7 @@
 package com.github.kevinhuet.evkfaction.Entity;
 
+import org.bukkit.ChatColor;
+
 public enum Relation {
 
     MEMBER(3, "Member"),
@@ -10,10 +12,17 @@ public enum Relation {
 
     private int value;
     private String name;
+    private ChatColor color;
 
     Relation(int i, String s) {
         this.value = i;
         this.name = s;
+        this.color = (new ChatColor[]{
+                ChatColor.RED,
+                ChatColor.WHITE,
+                ChatColor.LIGHT_PURPLE,
+                ChatColor.GREEN
+        })[i];
     }
 
     public int getValue() {
@@ -30,5 +39,13 @@ public enum Relation {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ChatColor getColor() {
+        return color;
+    }
+
+    public void setColor(ChatColor color) {
+        this.color = color;
     }
 }

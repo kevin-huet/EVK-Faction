@@ -52,16 +52,6 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent event) {
-        Faction faction = null;
-        if (event.getEntity() instanceof Player) {
-            faction = FactionManager.getInstance().getFactionByChunk(event.getEntity().getLocation().getChunk());
-            if (faction.getFactionType() == FactionType.SAFEZONE)
-                event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onExplosion(ExplosionPrimeEvent event) {
         Faction faction = FactionManager.getInstance().getFactionByChunk(event.getEntity().getLocation().getChunk());
 
@@ -84,8 +74,8 @@ public class ChunkListener implements Listener {
                 player.sendMessage(faction.getName() + " - " + faction.getDescription());
                 player.sendTitle(faction.getName(), faction.getDescription());
             } else if (faction != lastFaction) {
-                player.sendMessage("FreeZone - you can claim this");
-                player.sendTitle("FreeZone", "you can claim this");
+                player.sendMessage(ChatColor.DARK_GREEN+"FreeZone - you can claim this");
+                player.sendTitle(ChatColor.DARK_GREEN+"FreeZone", ChatColor.DARK_GREEN+"you can claim this");
             }
         }
     }

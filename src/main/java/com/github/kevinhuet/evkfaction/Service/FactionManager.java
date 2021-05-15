@@ -30,7 +30,7 @@ public class FactionManager {
 
     public Faction getFactionByName(String name) {
         for (Map.Entry<UUID, Faction> entry : this.factions.entrySet()) {
-            if (entry.getValue().getName().equals("name"))
+            if (entry.getValue().getName().equals(name))
                 return entry.getValue();
         }
         return null;

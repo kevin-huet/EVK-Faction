@@ -7,9 +7,11 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Faction {
+public class Faction implements Serializable {
+
 
     private UUID id;
     private String name;
@@ -18,26 +20,30 @@ public class Faction {
     private double power;
     private double powerMax;
     private double powerMin;
-    private Role role = Role.RECRUIT;
+    private Flags flags = new Flags();
     private List<Claim> claims = new ArrayList<>();
     private List<FactionPlayer> players = new ArrayList<>();
     private FactionType factionType = FactionType.NORMAL;
     private Map<UUID, Relation> relations = new HashMap<>();
+    private Map<FactionPlayer, Long> invitations = new HashMap<>();
 
     public Faction(String name, FactionPlayer creator) {
         this.id = UUID.randomUUID();
         this.players.add(creator);
         this.name = name;
-        this.power = 10 * this.players.size();
+        this.powerMax = 10 * this.players.size();
         FactionManager.getInstance().addFaction(this);
     }
 
+    public Faction() {
+        FactionManager.getInstance().addFaction(this);
+    }
     public Faction(String name, FactionPlayer creator, FactionType type) {
         this.id = UUID.randomUUID();
         this.players.add(creator);
         this.name = name;
         this.factionType = type;
-        this.power = 10 * this.players.size();
+        this.powerMax = 10 * this.players.size();
         FactionManager.getInstance().addFaction(this);
     }
 
@@ -51,8 +57,7 @@ public class Faction {
         if (target == null || target.getFactionType() == FactionType.FREEZONE) {
             if (existClaim == null || existClaim.getFaction() != this) {
                 this.claims.add(claim);
-                for (Claim c:
-                        this.getClaims()) {
+                for (Claim c : this.getClaims()) {
                     factionPlayer.getPlayer().sendMessage(c.getChunk().toString());
 
                 }
@@ -65,6 +70,14 @@ public class Faction {
             }
         }
         return claim;
+    }
+
+    public Flags getFlags() {
+        return flags;
+    }
+
+    public void setFlags(Flags flags) {
+        this.flags = flags;
     }
 
     public String getName() {
@@ -91,14 +104,6 @@ public class Faction {
         this.players = players;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public boolean isNegative() {
         return this.power < 0;
     }
@@ -117,6 +122,11 @@ public class Faction {
 
     public void setPower(double power) {
         this.power = power;
+    }
+
+    public void addPlayer(FactionPlayer player) {
+        this.players.add(player);
+        this.powerMax = 10 * this.players.size();
     }
 
     public double getPowerMax() {
@@ -162,8 +172,11 @@ public class Faction {
     public Faction setEnemy(String targetName) {
         Faction target = FactionManager.getInstance().getFactionByName(targetName);
 
-        if (target != null)
-            this.relations.put(target.getId(), Relation.ENEMY);
+        if (target == null)
+            return target;
+        this.sendMessageForAllMembers(ChatColor.RED+target.getName()+" is now enemy");
+        target.sendMessageForAllMembers(ChatColor.RED+this.getName()+" is now enemy");
+        this.relations.put(target.getId(), Relation.ENEMY);
         return target;
     }
 
@@ -206,6 +219,14 @@ public class Faction {
         }
     }
 
+    public void invitePlayer(FactionPlayer player) {
+        this.invitations.put(player, Calendar.getInstance().getTimeInMillis());
+        player.getPlayer().sendMessage(new String[]{
+                ChatColor.GREEN+"You have been invited by the faction "+ChatColor.YELLOW+this.getName(),
+                ChatColor.GREEN+"use '/f join "+this.getName()+"' to join the faction",
+        });
+    }
+
     public void rename(String name) {
         FactionManager.getInstance().renameFaction(this, name);
     }
@@ -218,7 +239,27 @@ public class Faction {
         this.id = id;
     }
 
+    public Map<FactionPlayer, Long> getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(Map<FactionPlayer, Long> invitations) {
+        this.invitations = invitations;
+    }
+
     public void setRelations(Map<UUID, Relation> relations) {
         this.relations = relations;
+    }
+
+    public Relation checkRelation(Faction target) {
+        if (target.getRelations().get(this.getId()) == Relation.ENEMY || relations.get(target.getId()) == Relation.ENEMY)
+            return Relation.ENEMY;
+        else if (target.getRelations().get(this.getId()) == Relation.ALLY || relations.get(target.getId()) == Relation.ALLY)
+            return Relation.ALLY;
+        return Relation.NEUTRAL;
+    }
+
+    public void addClaims(Claim claim) {
+        this.claims.add(claim);
     }
 }

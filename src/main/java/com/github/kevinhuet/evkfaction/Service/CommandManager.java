@@ -40,6 +40,6 @@ public class CommandManager {
         cmd.registerCommand("chunks", new ChunkFactionCommand());
         cmd.registerCommand("map", new MapFactionCommand());
         cmd.registerCommand("join", new JoinFactionCommand());
-
+        cmd.registerCommand("leave", new LeaveFactionCommand());
     }
 }

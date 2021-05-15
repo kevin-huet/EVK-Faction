@@ -2,10 +2,11 @@ package com.github.kevinhuet.evkfaction.Entity;
 
 import org.bukkit.block.Block;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum FactionType {
+public enum FactionType implements Serializable {
 
     SAFEZONE(3, "Safezone"),
     WARZONE(2, "Warzone"),

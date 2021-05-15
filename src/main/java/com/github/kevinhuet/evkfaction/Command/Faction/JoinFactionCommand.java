@@ -1,6 +1,7 @@
 package com.github.kevinhuet.evkfaction.Command.Faction;
 
 import com.github.kevinhuet.evkfaction.Command.SubCommand;
+import com.github.kevinhuet.evkfaction.Entity.Faction;
 import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
@@ -13,16 +14,13 @@ public class JoinFactionCommand implements SubCommand {
     @Override
     public void onCommand(Player player, Command command, String[] args) {
         FactionPlayer factionPlayer = null;
+        Faction target = null;
 
         if (args.length < 2)
             return;
         factionPlayer = FactionPlayerManager.getInstance().getPlayerFaction(player);
-        if (factionPlayer == null)
-            factionPlayer = new FactionPlayer(player);
-        factionPlayer.setFaction(FactionManager.getInstance().getFactionByName(args[1]));
-        FactionManager.getInstance().getFactionByName(args[1]).getPlayers().add(factionPlayer);
-        player.sendMessage(ChatColor.GREEN+"You join faction : "+factionPlayer.getFaction());
-
+        target = FactionManager.getInstance().getFactionByName(args[1]);
+        factionPlayer.joinFaction(target);
     }
 
     @Override

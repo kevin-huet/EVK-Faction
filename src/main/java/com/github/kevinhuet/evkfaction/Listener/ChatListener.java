@@ -14,6 +14,6 @@ public class ChatListener implements Listener {
         FactionPlayer fplayer = FactionPlayerManager.getInstance().getPlayerFaction(event.getPlayer());
 
         if (fplayer != null && fplayer.hasFaction())
-            event.setFormat(fplayer.getFaction().getName() + "%s: %s");
+            event.setFormat(fplayer.getFaction().getName() + " %s: %s");
     }
 }

@@ -1,6 +1,8 @@
 package com.github.kevinhuet.evkfaction.Entity;
 
-public enum Role {
+import java.io.Serializable;
+
+public enum Role implements Serializable {
 
     ADMIN(3, "Admin"),
     OFFICER(2, "Officer"),

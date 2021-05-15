@@ -1,8 +1,10 @@
 package com.github.kevinhuet.evkfaction;
 
 import com.github.kevinhuet.evkfaction.Command.BaseCommand;
+import com.github.kevinhuet.evkfaction.Entity.Faction;
 import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import com.github.kevinhuet.evkfaction.Service.CommandManager;
+import com.github.kevinhuet.evkfaction.Service.ConfigManager;
 import com.github.kevinhuet.evkfaction.Service.EventManager;
 import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
 import org.bukkit.command.PluginCommand;
@@ -20,9 +22,10 @@ public class App extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        initPlayers();
         CommandManager.getInstance().initCommand();
         EventManager.getInstance().InitEvents();
-        initPlayers();
+        ConfigManager.getInstance().initFactions();
         getLogger().info("enable");
     }
 

@@ -5,6 +5,7 @@ import com.github.kevinhuet.evkfaction.Command.SubCommand;
 import com.github.kevinhuet.evkfaction.Entity.Faction;
 import com.github.kevinhuet.evkfaction.Entity.FactionPlayer;
 import com.github.kevinhuet.evkfaction.Entity.Role;
+import com.github.kevinhuet.evkfaction.Service.ConfigManager;
 import com.github.kevinhuet.evkfaction.Service.FactionManager;
 import com.github.kevinhuet.evkfaction.Service.FactionPlayerManager;
 import org.bukkit.ChatColor;
@@ -20,10 +21,13 @@ public class CreateFactionCommand implements SubCommand {
             factionPlayer = new FactionPlayer(player.getUniqueId());
         if (factionPlayer.hasFaction())
             return;
-        if (FactionManager.getInstance().getFactionByName(args[1]) != null)
+        if (FactionManager.getInstance().getFactionByName(args[1]) != null) {
+            player.sendMessage(ChatColor.RED+"Faction already exist");
             return;
+        }
         factionPlayer.setFaction(new Faction(args[1], factionPlayer));
         factionPlayer.setRole(Role.ADMIN);
+        ConfigManager.getInstance().addFaction(factionPlayer.getFaction());
         player.sendMessage(ChatColor.YELLOW+"Faction "+args[1]+" has been created.");
     }
 
